@@ -49,17 +49,18 @@ var tmp:pointer;
 {%endregion}
 begin
     if _var_protoCllFFv2_FIRST<>nil then begin
-        //--- рвем кольцо
-       _tmp_protoCllFFv2_POINTER:=_var_protoCllFFv2_FIRST;
-       _var_protoCllFFv2_FIRST  :=_fnc_protoCllFFv2_getNext(_tmp_protoCllFFv2_POINTER);
-       _fnc_protoCllFFv2_setNext(_tmp_protoCllFFv2_POINTER,NIL);
-        //--- теперь по плану, как обычный список
-        {$ifDef inkCLL_FncSrcMessage}{$message 'protoCLL_bodyFNC__FFv2__CLEAR inLine #1 protoSLL_bodyFNC__FF__CLEAR'}{$endIF}
-        {$deFine _M_protoSLL_FF__var_FIRST  :=_var_protoCllFFv2_FIRST}
-        {$deFine _M_protoSLL_FF__lcl_getNext:=_fnc_protoCllFFv2_getNext}
-        {$deFine _M_protoSLL_FF__lcl_nodeDST:=_fnc_protoCllFFv2_nodeDST}
-        {$deFine _m_protoSLL_FF__tmp_POINTER:=_tmp_protoCllFFv2_POINTER}
-        {$I ../srcExt/inkSLL/protoSLL_bodyFNC__FF__CLEAR.inc}
+        //--- рвем кольцо, _var_protoCllFFv2_FIRST станет ВТОРЫМ элементом
+       _tmp_protoCllFFv2_POINTER:=_fnc_protoCllFFv2_getNext(_var_protoCllFFv2_FIRST);
+       _fnc_protoCllFFv2_setNext(_var_protoCllFFv2_FIRST,NIL);
+       _var_protoCllFFv2_FIRST  :=_tmp_protoCllFFv2_POINTER;
+        //--- теперь как обычный список
+        while _var_protoCllFFv2_FIRST<>nil do begin
+            // шаг на СЛЕДУЮЩИЙ
+           _tmp_protoCllFFv2_POINTER:=_var_protoCllFFv2_FIRST;
+           _var_protoCllFFv2_FIRST  :=_fnc_protoCllFFv2_getNext(_tmp_protoCllFFv2_POINTER);
+            // уничтожение элемента tmp
+           _fnc_protoCllFFv2_nodeDST(_tmp_protoCllFFv2_POINTER);
+        end;
     end;
 end;
 {%region /fold 'unDEF used macros'                                       }
