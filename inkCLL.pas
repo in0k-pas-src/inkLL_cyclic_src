@@ -50,6 +50,9 @@ unit inkCLL;
     06    - вставить УЗЕЛ в начало списка
     07    - вставить СПИСОК в начало списка
     --
+    C2    - вырезать ВТОРОЙ элемент списка
+    16    - вставить УЗЕЛ в список ВТОРЫМ элементом
+    --
     CFv1  - вырезать УЗЕЛ из Конца списка
     CFv2  - вырезать УЗЕЛ из Конца списка
     08v1  - вставить УЗЕЛ в конец списка
@@ -130,13 +133,13 @@ aInkSLL_doDispose=procedure(NODE:pointer) of object;
  @param(Data АДРЕС-памяти, некая инфа используемая при обходе)
  @param(NODE это ссылка-указатель на УЗЕЛ очереди [pQueueNode])
  @param(continue @true -- продолжить дальнейшую работу, @false -- ПРЕКРАТИТЬ)  }
-fInkSLL_doProcess=function(Data:pointer; NODE:pointer):boolean;
+fInkSLL_doProcess=function(const Data:pointer; const NODE:pointer):boolean;
 {"callBack" обработать Узел при обходе очереди (см. @link(queue_ProcessDirect))
  !!! метод ОБЪЕКТА-класса !!!
  @param(Data АДРЕС-памяти, некая инфа используемая при обходе)
  @param(NODE это ссылка-указатель на УЗЕЛ очереди [pQueueNode])
  @param(continue @true -- продолжить дальнейшую работу, @false -- ПРЕКРАТИТЬ)  }
-aInkSLL_doProcess=function(Data:pointer; NODE:pointer):boolean;
+aInkSLL_doProcess=function(const Data:pointer; const NODE:pointer):boolean;
 
 
 //****************************************************************************//
@@ -159,10 +162,10 @@ function  inkCLL_isEmpty (const CLL:pointer):boolean;                           
 function  inkCLL_clcCount(const CLL:pointer):tQueueCountNodes;                  {$ifdef _INLINE_} inline; {$endif}
 
 //== 2.3 от кончика ушей до пят (операции над ВСЕМ списком) ==
-(*
-function  inkSLL_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:fInkSLL_doProcess):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
-function  inkSLL_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:aInkSLL_doProcess):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
-procedure inkSLL_Invert   (var   CLL:pointer);                                                                  {$ifdef _INLINE_} inline; {$endif}
+
+function  inkCLL_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:fInkSLL_doProcess):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
+function  inkCLL_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:aInkSLL_doProcess):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
+(*procedure inkSLL_Invert   (var   CLL:pointer);                                                                  {$ifdef _INLINE_} inline; {$endif}
 
 //== 2.5 последний Герой (последний узел списка) ==
 
@@ -181,6 +184,15 @@ function  inkSLL_cutNodeRes(var CLL:pointer; const Node:pointer):boolean;       
 function  inkSLL_cutNodeFirst(var CLL:pointer):pointer;                         {$ifdef _INLINE_} inline; {$endif}
 procedure inkSLL_insNodeFirst(var CLL:pointer; const Node:pointer);             {$ifdef _INLINE_} inline; {$endif}
 procedure inkSLL_insListFirst(var CLL:pointer; const List:pointer);             {$ifdef _INLINE_} inline; {$endif}
+
+*)
+//=== ШЕЯ ===
+
+function  inkCLL_cutNodeSecond(const CLL:pointer):pointer;                      {$ifdef _INLINE_} inline; {$endif}
+//procedure inkCLL_insNodeSecond(var CLL:pointer; const Node:pointer);            {$ifdef _INLINE_} inline; {$endif}
+
+(*
+
 
 //=== Хвост ===
 
@@ -214,7 +226,7 @@ begin
     result:=pQueueNode(Node)^.next;
 end;
 
-procedure inkQueue_setNext(const node,next:pointer);
+procedure inkQueue_setNext(const node:pointer; const next:pointer);
 begin
     pQueueNode(Node)^.next:=next;
 end;
@@ -256,7 +268,7 @@ procedure inkCLL_clean_fast(var CLL:pointer);
 {$deFine _M_protoCLL_FFv2__lcl_nodeDST:=inkQueue_nodeDST}
 {$I 'protoCLL_bodyFNC__FFv2__CLEAR.inc'}
 
-{:::[FFv2x1] быстро УНИЧТОЖИТЬ элементы в порядке: ВТОРОГО по ПОСЛЕДНИЙ, ПЕРВЫЙ
+{:::[FFv2x1] быстро УНИЧТОЖИТЬ элементы в порядке <2,3..n,1>
   @param(CLL переменная-ссылко-указатель на первый узел списка)
   @param(disposePRC указатель на ФУНКЦИЮ уничтожения узла)
   ---
@@ -303,7 +315,7 @@ function inkCLL_clcCount(const CLL:pointer):tQueueCountNodes;
 {$deFine _M_protoCLL_11__out_COUNT:=result}
 {$I 'protoCLL_bodyFNC__11__Count.inc'}
 
-(*
+
 //------------------------------------------------------------------------------
 
 {:::[20x1] перечислить (посетить КАЖДЫЙ узел в порядке с ПЕРВОГО по ПОСЛЕДНИЙ)
@@ -312,13 +324,13 @@ function inkCLL_clcCount(const CLL:pointer):tQueueCountNodes;
   @param(enumFNC указатель на "callBack" функцию, вызываемую для КАЖДОГО узла)
   @returns(@nil -- обошли ВСЮ очередь, иначе ссылка-указатель на последний посещенный узел)
   :}
-function inkSLL_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:fInkSLL_doProcess):pointer;
+function inkCLL_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:fInkSLL_doProcess):pointer;
 {$ifDef inkCLL_FncSrcMessage}{$message 'source function "inkSLL_Enumerate"'}{$endIF}
 {$deFine _M_protoCLL_20__cst_FIRST   :=CLL}
 {$deFine _M_protoCLL_20__cst_enumData:=enumData}
 {$deFine _M_protoCLL_20__cst_enumFNC :=enumFNC}
 {$deFine _M_protoCLL_20__out_LAST    :=result}
-{$I 'protoSLL_bodyFNC__20__Enumerate.inc'}
+{$I 'protoCLL_bodyFNC__20__Enumerate.inc'}
 
 {:::[20x2] перечислить (посетить КАЖДЫЙ узел в порядке с ПЕРВОГО по ПОСЛЕДНИЙ)
   @param(CLL переменная-ссылко-указатель на первый узел списка)
@@ -326,16 +338,16 @@ function inkSLL_Enumerate(const CLL:pointer; const enumData:pointer; const enumF
   @param(enumFNC указатель на "callBack" функцию, вызываемую для КАЖДОГО узла)
   @returns(@nil -- обошли ВСЮ очередь, иначе ссылка-указатель [pQueueNode] на последний посещенный узел)
   :}
-function inkSLL_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:aInkSLL_doProcess):pointer;
+function inkCLL_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:aInkSLL_doProcess):pointer;
 {$ifDef inkCLL_FncSrcMessage}{$message 'source function "inkSLL_Enumerate"'}{$endIF}
 {$deFine _M_protoCLL_20__cst_FIRST   :=CLL}
 {$deFine _M_protoCLL_20__cst_enumData:=enumData}
 {$deFine _M_protoCLL_20__cst_enumFNC :=enumFNC}
 {$deFine _M_protoCLL_20__out_LAST    :=result}
-{$I 'protoSLL_bodyFNC__20__Enumerate.inc'}
+{$I 'protoCLL_bodyFNC__20__Enumerate.inc'}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+(*
 {:::[69] изменить порядок следования узлов списка на ОБРАТНЫЙ.
   @param(CLL переменная-ссылко-указатель на первый узел списка)
   :}
@@ -432,6 +444,36 @@ procedure inkSLL_insListFirst(var CLL:pointer; const List:pointer);
 {$deFine _M_protoCLL_07__cst_LIST :=List}
 {$I 'protoSLL_bodyFNC__07__insFirst.inc'}
 
+*)
+
+//------------------------------------------------------------------------------
+
+{:::[C2] вырезать ВТОРОЙ элемент списка
+  @param(CLL переменная-ссылко-указатель на первый узел списка)
+  @return(вырезанный ВТОРОЙ УЗЕЛ)
+  ---
+  # проверки Node^.next==@nil НЕТ (точнее тока в DEBUG режиме)
+  :}
+function  inkCLL_cutNodeSecond(const CLL:pointer):pointer;
+{$ifDef inkCLL_FncSrcMessage}{$message 'source function "inkCLL_cutNodeSecond"'}{$endIF}
+{$deFine _M_protoCLL_C2__cst_FIRST:=CLL}
+{$deFine _M_protoCLL_C2__out_NODE :=result}
+{$I protoCLL_bodyFNC__C2__cutNodeSecond.inc}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(*
+{:::[16] ВСТАВИТЬ список СНАЧАЛА
+  @param(CLL переменная-ссылко-указатель на первый узел списка)
+  @param(List переменная-ссылко-указатель на первый узел вставляемого СПИСКА)
+  ---
+  # проверки Node^.next==@nil НЕТ (точнее тока в DEBUG режиме)
+  :}
+procedure inkCLL_insNodeSecond(var CLL:pointer; const Node:pointer);
+begin
+
+end;
+*)
+(*
 //------------------------------------------------------------------------------
 
 {:::[CFv1] вырезать УЗЕЛ из КОНЦА списка
