@@ -1,4 +1,4 @@
-unit inkLLcyclic;
+unit inkLL_cyclic;
 {<*** Cyclic Linked Lists
     * библиокека для работы с "Циклическими Связными Списками"
     *}
