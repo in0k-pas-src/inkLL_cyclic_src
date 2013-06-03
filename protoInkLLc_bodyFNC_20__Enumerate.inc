@@ -21,10 +21,10 @@
         {$FATAL 'macro ".._enumFNC" : NOT define!'}
     {$endif}
     //---
-    {$if defined (_M_protoInkLLc_20__cst_enumDATA)}
-        {$define _cst_piLLc20_enumDATA:=_M_protoInkLLc_20__cst_enumDATA}
+    {$if defined (_M_protoInkLLc_20__cst_context)}
+        {$define _cst_piLLc20_context:=_M_protoInkLLc_20__cst_context}
     {$else}
-        {$define _cst_piLLc20_enumDATA:=NIL}
+        {$define _cst_piLLc20_context:=NIL}
     {$endif}
     //---
     {$if defined (_M_protoInkLLc_20__out_LAST)}
@@ -45,11 +45,21 @@ begin
    _out_piLLc20_LAST:=_cst_piLLc20_FIRST;
     if _out_piLLc20_LAST<>nil then begin
         repeat
-          if _cst_piLLc20_enumFNC(_cst_piLLc20_enumData,_out_piLLc20_LAST)
-          then _out_piLLc20_LAST:=_fnc_piLLc20_getNext(_out_piLLc20_LAST)
-          else  break;
-          //--
-          if _out_piLLc20_LAST=_cst_piLLc20_FIRST then _out_piLLc20_LAST:=NIL;
+            {$if defined(_M_protoInkLLc_20__lcl_preENUM)}
+              {$define _fnc_piLLc20_enumOBJ:=_M_protoInkLLc_20__lcl_preENUM(_out_piLLc20_LAST)}
+            {$else}
+              {$define _fnc_piLLc20_enumOBJ:=_out_piLLc20_LAST}
+            {$endif}
+            if _cst_piLLc20_enumFNC(_cst_piLLc20_context,_fnc_piLLc20_enumOBJ)
+            then _out_piLLc20_LAST:=_fnc_piLLc20_getNext(_out_piLLc20_LAST)
+            else begin
+              {$if defined(_M_protoInkLLc_20__lcl_preENUM)}
+               _out_piLLc20_LAST:=_fnc_piLLc20_enumOBJ;
+              {$endif}
+                break;
+            end;
+            //--
+            if _out_piLLc20_LAST=_cst_piLLc20_FIRST then _out_piLLc20_LAST:=NIL;
         until _out_piLLc20_LAST=nil;
     end;
 end;
@@ -57,13 +67,14 @@ end;
     //--- undef Local macros
     {$unDef _cst_piLLc20_FIRST}
     {$unDef _cst_piLLc20_enumFNC}
-    {$unDef _cst_piLLc20_enumDATA}
+    {$unDef _cst_piLLc20_context}
     {$unDef _out_piLLc20_LAST}
     {$unDef _fnc_piLLc20_getNext}
     //--- undef user
     {$unDef _M_protoInkLLc_20__cst_FIRST}
+    {$unDef _M_protoInkLLc_20__lcl_preENUM}
     {$unDef _M_protoInkLLc_20__cst_enumFNC}
-    {$unDef _M_protoInkLLc_20__cst_enumDATA}
+    {$unDef _M_protoInkLLc_20__cst_context}
     {$unDef _M_protoInkLLc_20__out_LAST}
     {$unDef _M_protoInkLLc_20__lcl_getNext}
 {%endregion 'unDEF used macros' /fold}
