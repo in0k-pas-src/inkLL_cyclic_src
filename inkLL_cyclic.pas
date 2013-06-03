@@ -124,8 +124,8 @@ function  inkLLc_clcCount(const CLL:pointer):tInkLLNodeCount;                   
 
 //== 2.3 от кончика ушей до пят (операции над ВСЕМ списком) ==
 
-function  inkLLc_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:fInkNodeLL_doProcess):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
-function  inkLLc_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:aInkNodeLL_doProcess):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
+function  inkLLc_Enumerate(const CLL:pointer; const Context:pointer; const EnumFNC:fInkNodeLL_doProcess):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
+function  inkLLc_Enumerate(const CLL:pointer; const Context:pointer; const EnumFNC:aInkNodeLL_doProcess):pointer; {$ifdef _INLINE_} inline; {$endif} overload;
 (*procedure inkLLc_Invert   (var   CLL:pointer);                                                                  {$ifdef _INLINE_} inline; {$endif}
 
 //== 2.5 последний Герой (последний узел списка) ==
@@ -289,32 +289,32 @@ end;
 
 {:::[20x1] перечислить (посетить КАЖДЫЙ узел в порядке с ПЕРВОГО по ПОСЛЕДНИЙ)
   @param(CLL переменная-ссылко-указатель на первый узел списка)
-  @param(enumData указатель на "информацию", передаваемую в enumFNC для каждого узла)
-  @param(enumFNC указатель на "callBack" функцию, вызываемую для КАЖДОГО узла)
+  @param(Context указатель на "информацию", передаваемую в EnumFNC для каждого узла)
+  @param(EnumFNC указатель на "callBack" функцию, вызываемую для КАЖДОГО узла)
   @returns(@nil -- обошли ВСЮ очередь, иначе ссылка-указатель на последний посещенный узел)
   :}
-function inkLLc_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:fInkNodeLL_doProcess):pointer;
+function inkLLc_Enumerate(const CLL:pointer; const Context:pointer; const EnumFNC:fInkNodeLL_doProcess):pointer;
 {$ifDef inkLLcyclic_fncHeadMessage}{$message 'inkLLc_Enumerate function'}{$endIF}
-{$deFine _M_protoInkLLc_20__cst_FIRST   :=CLL}
-{$deFine _M_protoInkLLc_20__cst_enumData:=enumData}
-{$deFine _M_protoInkLLc_20__cst_enumFNC :=enumFNC}
-{$deFine _M_protoInkLLc_20__out_LAST    :=result}
+{$deFine _M_protoInkLLc_20__cst_FIRST  :=CLL}
+{$deFine _M_protoInkLLc_20__cst_context:=Context}
+{$deFine _M_protoInkLLc_20__cst_enumFNC:=EnumFNC}
+{$deFine _M_protoInkLLc_20__out_LAST   :=result}
 begin //< для удобства навигации
 {$I protoInkLLc_bodyFNC_20__Enumerate.inc}
 end;
 
 {:::[20x2] перечислить (посетить КАЖДЫЙ узел в порядке с ПЕРВОГО по ПОСЛЕДНИЙ)
   @param(CLL переменная-ссылко-указатель на первый узел списка)
-  @param(enumData указатель на "информацию", передаваемую в enumFNC для каждого узла)
-  @param(enumFNC указатель на "callBack" функцию, вызываемую для КАЖДОГО узла)
+  @param(Context указатель на "информацию", передаваемую в EnumFNC для каждого узла)
+  @param(EnumFNC указатель на "callBack" функцию, вызываемую для КАЖДОГО узла)
   @returns(@nil -- обошли ВСЮ очередь, иначе ссылка-указатель [pQueueNode] на последний посещенный узел)
   :}
-function inkLLc_Enumerate(const CLL:pointer; const enumData:pointer; const enumFNC:aInkNodeLL_doProcess):pointer;
+function inkLLc_Enumerate(const CLL:pointer; const Context:pointer; const EnumFNC:aInkNodeLL_doProcess):pointer;
 {$ifDef inkLLcyclic_fncHeadMessage}{$message 'inkLLc_Enumerate method'}{$endIF}
-{$deFine _M_protoInkLLc_20__cst_FIRST   :=CLL}
-{$deFine _M_protoInkLLc_20__cst_enumData:=enumData}
-{$deFine _M_protoInkLLc_20__cst_enumFNC :=enumFNC}
-{$deFine _M_protoInkLLc_20__out_LAST    :=result}
+{$deFine _M_protoInkLLc_20__cst_FIRST  :=CLL}
+{$deFine _M_protoInkLLc_20__cst_context:=Context}
+{$deFine _M_protoInkLLc_20__cst_enumFNC:=EnumFNC}
+{$deFine _M_protoInkLLc_20__out_LAST   :=result}
 begin //< для удобства навигации
 {$I protoInkLLc_bodyFNC_20__Enumerate.inc}
 end;
