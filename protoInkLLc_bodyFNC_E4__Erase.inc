@@ -48,6 +48,14 @@
     {$else}
         {$FATAL 'macro ".._dspPRC" : NOT define!'}
     {$endif}
+    {$if defined(_M_protoInkLLc_E4__lcl_getDATA) AND defined(_M_protoInkLLc_E4__lcl_dspDATA)}
+        procedure __protoInkLLc_E4__lcl_dspNODE__(const node:pointer); inline;
+        begin
+          _M_protoInkLLc_E4__lcl_dspDATA(_M_protoInkLLc_E4__lcl_getDATA(node));
+          _M_protoInkLLc_E4__lcl_dspPRC (node);
+        end;
+        {$define _prc_piLLcE4_dspPRC:=__protoInkLLc_E4__lcl_dspNODE__}
+    {$endif}
 {%endregion}
 {%region /fold 'setUP local VARs'                                        }
 {$if defined (_m_protoInkLLc_E4__tmp_POINTER0)}
@@ -64,8 +72,8 @@ var tmq:pointer;
 {$endif}
 {%endregion}
 begin
-    //--- работа с ПОСЛЕДУЮЩИМИ
     if _var_piLLcE4_FIRST<>nil then begin
+        //--- работа с ПОСЛЕДУЮЩИМИ
        _tmp_piLLcE4_POINTER0:=_var_piLLcE4_FIRST;
        _tmp_piLLcE4_POINTER1:=_fnc_piLLcE4_getNext(_tmp_piLLcE4_POINTER0);
         while _tmp_piLLcE4_POINTER1<>_var_piLLcE4_FIRST do begin
@@ -79,7 +87,7 @@ begin
               _tmp_piLLcE4_POINTER1:=_fnc_piLLcE4_getNext(_tmp_piLLcE4_POINTER0);
             end
         end;
-        //---
+        //--- работа с ПЕРВЫМ
         if _fnc_piLLcE4_cmpFNC(_M_protoInkLLc_E4__cst_cmpCTX,_var_piLLcE4_FIRST) then begin
             if _tmp_piLLcE4_POINTER0=_var_piLLcE4_FIRST then begin
                _var_piLLcE4_FIRST:=NIL;
@@ -112,4 +120,7 @@ end;
     {$unDef _M_protoInkLLc_E4__lcl_dspPRC}
     {$unDef _M_protoInkLLc_E4__lcl_getNext}
     {$unDef _M_protoInkLLc_E4__lcl_setNext}
+    {$unDef _M_protoInkLLc_E4__lcl_getDATA}
+    {$unDef _M_protoInkLLc_E4__lcl_dspDATA}
+
 {%endregion}
