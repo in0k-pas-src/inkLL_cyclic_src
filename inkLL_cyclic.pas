@@ -30,6 +30,8 @@ unit inkLL_cyclic;
     FFx1  - очистка с вызовом-по-указателю функции
     FFx2  - очистка с вызовом-по-указателю МЕТОДА класса
 
+    E4    - очистка узлов удовлетворяющих условию
+
     -- 2.2 текущие/очевидные свойства списка
     10    - проверка на пустоту
     11    - количесво узлов
@@ -113,9 +115,13 @@ uses {$ifOpt D+}sysutils,{$endif} //< попытка отлова ДИНАМИЧ
 
 procedure inkLLc_INIT(out CLL:pointer);                                         {$ifdef _INLINE_} inline; {$endif}
 
-//procedure inkLLc_clean_fast(var CLL:pointer);                                 {$ifdef _INLINE_} inline; {$endif}
-procedure inkLLc_CLEAR_fast(var CLL:pointer; disposePRC:fInkNodeLL_doDispose);  {$ifdef _INLINE_} inline; {$endif} overload;
-procedure inkLLc_CLEAR_fast(var CLL:pointer; disposePRC:aInkNodeLL_doDispose);  {$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkLLc_CLEAR_fast(var CLL:pointer; const disposePRC:fInkNodeLL_doDispose);  {$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkLLc_CLEAR_fast(var CLL:pointer; const disposePRC:aInkNodeLL_doDispose);  {$ifdef _INLINE_} inline; {$endif} overload;
+
+procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:fInkNodeLL_doProcess; const DspPRC:fInkNodeLL_doDispose); {$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:fInkNodeLL_doProcess; const DspPRC:aInkNodeLL_doDispose); {$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:aInkNodeLL_doProcess; const DspPRC:fInkNodeLL_doDispose); {$ifdef _INLINE_} inline; {$endif} overload;
+procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:aInkNodeLL_doProcess; const DspPRC:aInkNodeLL_doDispose); {$ifdef _INLINE_} inline; {$endif} overload;
 
 //== 2.2 текущие/очевидные свойства списка ==
 
@@ -212,26 +218,13 @@ end;
 
 //------------------------------------------------------------------------------
 
-{:::[FFv2x0] быстро УНИЧТОЖИТЬ элементы в порядке: ВТОРОГО по ПОСЛЕДНИЙ, ПЕРВЫЙ
-  @param(CLL переменная-ссылко-указатель на первый узел списка)
-  ---
-  * уничтожение узлов типа pQueueNode => вообще говоря данныя функция
-    написанна тока для тестов, и используется ТОЛЬКО в них
-  * после выполнения CLL===@nil
-  :}
-(*procedure inkLLc_clean_fast(var CLL:pointer);
-{$ifDef inkLLcyclic_fncHeadMessage}{$message 'source function "inkLLc_clean_fast"'}{$endIF}
-{$deFine _M_protoInkLLc_FFv2__var_FIRST  :=CLL}
-{$deFine _M_protoInkLLc_FFv2__lcl_nodeDST:=inkQueue_nodeDST}
-{$I protoInkLLc_bodyFNC_FFv2__CLEAR.inc}*)
-
 {:::[FFv2x1] быстро УНИЧТОЖИТЬ элементы в порядке <2,3..n,1>
   @param(CLL переменная-ссылко-указатель на первый узел списка)
   @param(disposePRC указатель на ФУНКЦИЮ уничтожения узла)
   ---
   * после выполнения CLL===@nil
   :}
-procedure inkLLc_CLEAR_fast(var CLL:pointer; disposePRC:fInkNodeLL_doDispose);
+procedure inkLLc_CLEAR_fast(var CLL:pointer; const disposePRC:fInkNodeLL_doDispose);
 {$ifDef inkLLcyclic_fncHeadMessage}{$message 'inkLLc_CLEAR_fast function'}{$endIF}
 var tmp:pointer; //< для удобства навигации
 {$deFine _m_protoInkLLc_FFv2__tmp_POINTER:=tmp}
@@ -247,7 +240,7 @@ end;
   ---
   * после выполнения CLL===@nil
   :}
-procedure inkLLc_CLEAR_fast(var CLL:pointer; disposePRC:aInkNodeLL_doDispose);
+procedure inkLLc_CLEAR_fast(var CLL:pointer; const disposePRC:aInkNodeLL_doDispose);
 {$ifDef inkLLcyclic_fncHeadMessage}{$message 'inkLLc_CLEAR_fast method'}{$endIF}
 var tmp:pointer; //< для удобства навигации
 {$deFine _m_protoInkLLc_FFv2__tmp_POINTER:=tmp}
@@ -255,6 +248,60 @@ var tmp:pointer; //< для удобства навигации
 {$deFine _M_protoInkLLc_FFv2__lcl_nodeDST:=disposePRC}
 begin //< для удобства навигации
 {$I protoInkLLc_bodyFNC_FFv2__CLEAR.inc}
+end;
+
+//------------------------------------------------------------------------------
+
+procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:fInkNodeLL_doProcess; const DspPRC:fInkNodeLL_doDispose);
+{$ifDef inkLLsimple_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
+var tmp,tmq:pointer;
+{$deFine _m_protoInkLLc_E4__tmp_POINTER0:=tmp}
+{$deFine _m_protoInkLLc_E4__tmp_POINTER1:=tmq}
+{$deFine _M_protoInkLLc_E4__var_FIRST   :=SLL}
+{$deFine _M_protoInkLLc_E4__cst_cmpCTX  :=CmpCXT}
+{$deFine _M_protoInkLLc_E4__lcl_cmpFNC  :=CmpFNC}
+{$deFine _M_protoInkLLc_E4__lcl_dspPRC  :=DspPRC}
+begin //< для удобства навигации
+{$I protoInkLLc_bodyFNC_E4__Erase.inc}
+end;
+
+procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:fInkNodeLL_doProcess; const DspPRC:aInkNodeLL_doDispose);
+{$ifDef inkLLsimple_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
+var tmp,tmq:pointer;
+{$deFine _m_protoInkLLc_E4__tmp_POINTER0:=tmp}
+{$deFine _m_protoInkLLc_E4__tmp_POINTER1:=tmq}
+{$deFine _M_protoInkLLc_E4__var_FIRST   :=SLL}
+{$deFine _M_protoInkLLc_E4__cst_cmpCTX  :=CmpCXT}
+{$deFine _M_protoInkLLc_E4__lcl_cmpFNC  :=CmpFNC}
+{$deFine _M_protoInkLLc_E4__lcl_dspPRC  :=DspPRC}
+begin //< для удобства навигации
+{$I protoInkLLc_bodyFNC_E4__Erase.inc}
+end;
+
+procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:aInkNodeLL_doProcess; const DspPRC:fInkNodeLL_doDispose);
+{$ifDef inkLLsimple_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
+var tmp,tmq:pointer;
+{$deFine _m_protoInkLLc_E4__tmp_POINTER0:=tmp}
+{$deFine _m_protoInkLLc_E4__tmp_POINTER1:=tmq}
+{$deFine _M_protoInkLLc_E4__var_FIRST   :=SLL}
+{$deFine _M_protoInkLLc_E4__cst_cmpCTX  :=CmpCXT}
+{$deFine _M_protoInkLLc_E4__lcl_cmpFNC  :=CmpFNC}
+{$deFine _M_protoInkLLc_E4__lcl_dspPRC  :=DspPRC}
+begin //< для удобства навигации
+{$I protoInkLLc_bodyFNC_E4__Erase.inc}
+end;
+
+procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:aInkNodeLL_doProcess; const DspPRC:aInkNodeLL_doDispose);
+{$ifDef inkLLsimple_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
+var tmp,tmq:pointer;
+{$deFine _m_protoInkLLc_E4__tmp_POINTER0:=tmp}
+{$deFine _m_protoInkLLc_E4__tmp_POINTER1:=tmq}
+{$deFine _M_protoInkLLc_E4__var_FIRST   :=SLL}
+{$deFine _M_protoInkLLc_E4__cst_cmpCTX  :=CmpCXT}
+{$deFine _M_protoInkLLc_E4__lcl_cmpFNC  :=CmpFNC}
+{$deFine _M_protoInkLLc_E4__lcl_dspPRC  :=DspPRC}
+begin //< для удобства навигации
+{$I protoInkLLc_bodyFNC_E4__Erase.inc}
 end;
 
 //------------------------------------------------------------------------------
