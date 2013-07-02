@@ -24,9 +24,9 @@
     {$endif}
     //---
     {$if defined (_M_protoInkLLc_FFv2__lcl_setNext)}
-        {$define _fnc_piLLcFFv2_setNext:=_M_protoInkLLc_FFv2__lcl_setNext}
+        {$define _prc_piLLcFFv2_setNext:=_M_protoInkLLc_FFv2__lcl_setNext}
     {$elseif defined (_M_protoInkLLc_blockFNK__SetNext)}
-        {$define _fnc_piLLcFFv2_setNext:=_M_protoInkLLc_blockFNK__SetNext}
+        {$define _prc_piLLcFFv2_setNext:=_M_protoInkLLc_blockFNK__SetNext}
     {$else}
         {$FATAL 'macro ".._setNext" : NOT define!'}
     {$endif}
@@ -51,7 +51,7 @@ begin
     if _var_piLLcFFv2_FIRST<>nil then begin
         //--- рвем кольцо, _var_piLLcFFv2_FIRST станет ВТОРЫМ элементом
        _tmp__piLLcFFv2_POINTER:=_fnc_piLLcFFv2_getNext(_var_piLLcFFv2_FIRST);
-       _fnc_piLLcFFv2_setNext(_var_piLLcFFv2_FIRST,NIL);
+       _prc_piLLcFFv2_setNext(_var_piLLcFFv2_FIRST,NIL);
        _var_piLLcFFv2_FIRST  :=_tmp__piLLcFFv2_POINTER;
         //--- теперь как обычный список
         while _var_piLLcFFv2_FIRST<>nil do begin
@@ -69,7 +69,7 @@ end;
     //--- undef Local macros
     {$unDef _var_piLLcFFv2_FIRST}
     {$unDef _fnc_piLLcFFv2_getNext}
-    {$unDef _fnc_piLLcFFv2_setNext}
+    {$unDef _prc_piLLcFFv2_setNext}
     {$unDef _fnc_piLLcFFv2_nodeDST}
     //--- undef user macros
     {$undef _m_protoInkLLc_FFv2__tmp_POINTER}

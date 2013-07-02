@@ -48,14 +48,6 @@
     {$else}
         {$FATAL 'macro ".._dspPRC" : NOT define!'}
     {$endif}
-    {$if defined(_M_protoInkLLc_E4__lcl_getDATA) AND defined(_M_protoInkLLc_E4__lcl_dspDATA)}
-        procedure __protoInkLLc_E4__lcl_dspNODE__(const node:pointer); inline;
-        begin
-          _M_protoInkLLc_E4__lcl_dspDATA(_M_protoInkLLc_E4__lcl_getDATA(node));
-          _M_protoInkLLc_E4__lcl_dspPRC (node);
-        end;
-        {$define _prc_piLLcE4_dspPRC:=__protoInkLLc_E4__lcl_dspNODE__}
-    {$endif}
 {%endregion}
 {%region /fold 'setUP local VARs'                                        }
 {$if defined (_m_protoInkLLc_E4__tmp_POINTER0)}
@@ -120,7 +112,4 @@ end;
     {$unDef _M_protoInkLLc_E4__lcl_dspPRC}
     {$unDef _M_protoInkLLc_E4__lcl_getNext}
     {$unDef _M_protoInkLLc_E4__lcl_setNext}
-    {$unDef _M_protoInkLLc_E4__lcl_getDATA}
-    {$unDef _M_protoInkLLc_E4__lcl_dspDATA}
-
 {%endregion}
