@@ -91,7 +91,6 @@ interface
 {}       {$undef _INLINE_} // дeбугить просче БЕЗ INLIN`а                     {}
 {}  {$endif}                                                                  {}
 {%endregion}//-------------------------------------------[ compiler directives ]
-{$define _INLINE_}
 {$ifOpt D+}
 {$define inkLLcyclic_fncHeadMessage} //< сообщения о текущей процедуре, с ними проще ловить ошибки
 {$endif}
@@ -253,7 +252,7 @@ end;
 //------------------------------------------------------------------------------
 
 procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:fInkNodeLL_doProcess; const DspPRC:fInkNodeLL_doDispose);
-{$ifDef inkLLsimple_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
+{$ifDef inkLLcyclic_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
 var tmp,tmq:pointer;
 {$deFine _m_protoInkLLc_E4__tmp_POINTER0:=tmp}
 {$deFine _m_protoInkLLc_E4__tmp_POINTER1:=tmq}
@@ -266,7 +265,7 @@ begin //< для удобства навигации
 end;
 
 procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:fInkNodeLL_doProcess; const DspPRC:aInkNodeLL_doDispose);
-{$ifDef inkLLsimple_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
+{$ifDef inkLLcyclic_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
 var tmp,tmq:pointer;
 {$deFine _m_protoInkLLc_E4__tmp_POINTER0:=tmp}
 {$deFine _m_protoInkLLc_E4__tmp_POINTER1:=tmq}
@@ -279,7 +278,7 @@ begin //< для удобства навигации
 end;
 
 procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:aInkNodeLL_doProcess; const DspPRC:fInkNodeLL_doDispose);
-{$ifDef inkLLsimple_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
+{$ifDef inkLLcyclic_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
 var tmp,tmq:pointer;
 {$deFine _m_protoInkLLc_E4__tmp_POINTER0:=tmp}
 {$deFine _m_protoInkLLc_E4__tmp_POINTER1:=tmq}
@@ -292,7 +291,7 @@ begin //< для удобства навигации
 end;
 
 procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:aInkNodeLL_doProcess; const DspPRC:aInkNodeLL_doDispose);
-{$ifDef inkLLsimple_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
+{$ifDef inkLLcyclic_fncHeadMessage}{$message 'inkLLs_Erase_fast xff'}{$endIF}
 var tmp,tmq:pointer;
 {$deFine _m_protoInkLLc_E4__tmp_POINTER0:=tmp}
 {$deFine _m_protoInkLLc_E4__tmp_POINTER1:=tmq}
