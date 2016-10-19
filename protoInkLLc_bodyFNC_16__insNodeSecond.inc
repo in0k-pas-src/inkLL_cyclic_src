@@ -39,7 +39,7 @@
         {$FATAL 'macro ".._setNext" : NOT define!'}
     {$endif}
 {%endregion}
-begin
+begin {todo: поменять очередность, имходя из того что чаще тут что-то лежит}
     if _var_piLLc16_FIRST=nil then begin
        _var_piLLc16_FIRST:=_M_protoInkLLc_16__cst_NODE;
        _fnc_piLLc16_setNext(_var_piLLc16_FIRST,_var_piLLc16_FIRST);

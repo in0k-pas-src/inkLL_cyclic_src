@@ -62,6 +62,16 @@ begin
            _fnc_piLLcFFv2_nodeDST(_tmp__piLLcFFv2_POINTER);
         end;
     end;
+    {todo: а че не так?}
+    (*// рвем кольцо
+    tmp:=List^.next;
+    List^.next:=NIL;
+    // уничтожаем список
+    repeat
+        List:=tmp^.next;
+       _EVENT_NODE__DST_(tmp);
+        tmp :=List;
+    until not Assigned(tmp);*)
 end;
 {%region /fold 'unDEF used macros'                                       }
     //--- undef SUPER local macros

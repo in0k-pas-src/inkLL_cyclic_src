@@ -124,6 +124,7 @@ procedure inkLLc_Erase_fast(var SLL:pointer; const CmpCXT:pointer; const CmpFNC:
 
 //== 2.2 текущие/очевидные свойства списка ==
 
+function  inkLLc_Present (const CLL:pointer):boolean;                           {$ifdef _INLINE_} inline; {$endif}
 function  inkLLc_isEmpty (const CLL:pointer):boolean;                           {$ifdef _INLINE_} inline; {$endif}
 function  inkLLc_clcCount(const CLL:pointer):tInkLLNodeCount;                   {$ifdef _INLINE_} inline; {$endif}
 
@@ -158,6 +159,15 @@ procedure inkLLc_insListFirst(var CLL:pointer; const List:pointer);             
 
 function  inkLLc_cutNodeSecond(const CLL:pointer):pointer;                      {$ifdef _INLINE_} inline; {$endif}
 procedure inkLLc_insNodeSecond(var CLL:pointer; const Node:pointer);            {$ifdef _INLINE_} inline; {$endif}
+
+//function  inkLLc_getSecond  (const CLL:pointer):pointer;                      {$ifdef _INLINE_} inline; {$endif}
+//function  inkLLc_getPrevious(const CLL:pointer):pointer;                      {$ifdef _INLINE_} inline; {$endif}
+
+
+function  inkLLcl_InsNode (var   CLL:pointer; const Node:pointer):pointer;  {$ifdef _INLINE_} inline; {$endif}
+function  inkLLcl_getFirst(const CLL:pointer):pointer;                      {$ifdef _INLINE_} inline; {$endif}
+function  inkLLcl_getNext (const CLL:pointer; const Node:pointer):pointer;  {$ifdef _INLINE_} inline; {$endif}
+
 
 (*
 
@@ -304,6 +314,11 @@ begin //< для удобства навигации
 end;
 
 //------------------------------------------------------------------------------
+
+function inkLLc_Present(const CLL:pointer):boolean;
+begin
+    result:=Assigned(CLL);
+end;
 
 {:::[10] очередь ПУСТая?
   @param (CLL переменная-ссылко-указатель на первый узел списка)
@@ -506,6 +521,18 @@ procedure inkLLc_insNodeSecond(var CLL:pointer; const Node:pointer);
 begin //< для удобства навигации
 {$I protoInkLLc_bodyFNC_16__insNodeSecond.inc}
 end;
+
+
+function  inkLLcl_InsNode (var CLL:pointer; const Node:pointer):pointer;
+{$ifDef inkLLcyclic_fncHeadMessage}{$message 'inkLLcl_InsNode'}{$endIF}
+{$deFine _M_protoInkLLc_16__var_FIRST:=CLL}
+{$deFine _M_protoInkLLc_16__cst_NODE :=Node}
+begin //< для удобства навигации
+{$I protoInkLLc_bodyFNC_16__insNodeSecond.inc}
+CLL:=Node;
+end;
+
+
 (*
 //------------------------------------------------------------------------------
 
@@ -662,4 +689,27 @@ function inkLLc_cutNodeIndex(var CLL:pointer; Index:tQueueCountNodes):pointer;
 {$deFine _M_protoInkLLc_A5v1__out_NODE :=result}
 {$I 'protoSLL_bodyFNC__A5v1__insNodeIndex.inc}
     *)
+
+
+
+
+
+
+
+
+
+
+
+function inkLLcl_getFirst(const CLL:pointer):pointer;
+begin
+    result:=inkNodeLLc_getNext(CLL);
+end;
+
+function inkLLcl_getNext(const CLL:pointer; const Node:pointer):pointer;
+begin
+    if node<>CLL then result:=inkNodeLLc_getNext(Node)
+    else result:=nil;
+end;
+
+
 end.
